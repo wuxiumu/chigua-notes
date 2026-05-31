@@ -19,7 +19,9 @@ console.log(`🚀 API 模式: ${USE_MOCK ? '📱 站点Mock + 事件/管理后�
 
 // ====== HTTP 工具 ======
 async function get(path) {
-  const r = await fetch(BASE + path)
+  const r = await fetch(BASE + path, {
+    credentials: 'include', // 携带 Cookie（登录态）
+  })
   if (!r.ok) throw new Error('请求失败 ' + r.status)
   return r.json()
 }
@@ -28,6 +30,7 @@ async function post(path, body) {
   const r = await fetch(BASE + path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    credentials: 'include', // 携带 Cookie
     body: JSON.stringify(body || {})
   })
   if (!r.ok) throw new Error('请求失败 ' + r.status)

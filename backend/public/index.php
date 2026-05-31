@@ -315,8 +315,10 @@ try {
         setcookie('admin_token', $token, [
             'expires'  => time() + 86400,
             'path'     => '/',
+            'domain'   => '.51chigua.com',    // 子域共享
+            'secure'   => true,                // 仅 HTTPS
             'httponly' => true,
-            'samesite' => 'Lax',
+            'samesite' => 'None',             // 跨域请求发送
         ]);
 
         json(['ok' => true, 'token' => $token]);
@@ -330,7 +332,7 @@ try {
         if ($token) {
             $auth->destroySession($token);
         }
-        setcookie('admin_token', '', time() - 3600, '/', '', false, true);
+        setcookie('admin_token', '', time() - 3600, '/', '.51chigua.com', true, true);
         json(['ok' => true]);
     }
 
