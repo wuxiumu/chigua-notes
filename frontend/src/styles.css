@@ -9,7 +9,7 @@
   --gold: #d9a441;
   --muted: #8a7d6b;
   --line: #d8c9b0;
-  font-family: 'Noto Serif SC', 'Source Han Serif SC', 'STSong', 'SimSun', Georgia, serif;
+  font-family: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif SC', Georgia, serif;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -25,7 +25,7 @@ body {
 
 a { color: inherit; text-decoration: none; }
 
-.kuaile { font-family: 'ZCOOL KuaiLe', 'Noto Serif SC', 'STKaiti', 'KaiTi', serif; }
+.kuaile { font-family: 'STKaiti', 'KaiTi', 'Songti SC', serif; }
 
 /* ===== 顶栏 ===== */
 .topbar {
@@ -38,7 +38,7 @@ a { color: inherit; text-decoration: none; }
   display: flex; align-items: baseline; gap: 18px; flex-wrap: wrap;
 }
 .logo {
-  font-family: 'ZCOOL KuaiLe', 'Noto Serif SC', 'STKaiti', 'KaiTi', serif;
+  font-family: 'STKaiti', 'KaiTi', 'Songti SC', serif;
   font-size: 30px; color: var(--melon);
   letter-spacing: 1px; line-height: 1;
 }
