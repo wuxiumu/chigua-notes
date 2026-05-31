@@ -129,12 +129,20 @@ if ($seoPath === 'sitemap.xml' && $_SERVER['REQUEST_METHOD'] === 'GET') {
     exit;
 }
 
-// CORS
-header('Access-Control-Allow-Origin: ' . $config['cors_origin']);
+// CORS 动态回显匹配的 Origin，支持多前端域名 + credentials
+$allowedOrigins = $config['cors_allowed_origins'] ?? ['*'];
+$requestOrigin = $_SERVER['HTTP_ORIGIN'] ?? '';
+if ($requestOrigin && in_array($requestOrigin, $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: ' . $requestOrigin);
+    header('Access-Control-Allow-Credentials: true');
+} elseif (in_array('*', $allowedOrigins, true)) {
+    header('Access-Control-Allow-Origin: *');
+}
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+header('Access-Control-Allow-Headers: Content-Type, Authorization, Cookie');
+header('Vary: Origin');
 header('Content-Type: application/json; charset=utf-8');
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { exit; }
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
 // 路由解析：/api/xxx
 $path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
