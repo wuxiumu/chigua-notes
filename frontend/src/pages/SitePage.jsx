@@ -18,6 +18,12 @@ export default function SitePage() {
     ]).finally(() => setLoading(false))
   }, [siteSlug])
 
+  useEffect(() => {
+    if (site) {
+      document.title = `${site.name} · 51呀呀`
+    }
+  }, [site])
+
   if (!site && !loading) {
     return <div className="empty-state">
       <div className="empty-icon">❌</div>

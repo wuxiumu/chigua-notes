@@ -61,6 +61,10 @@ function MiniCalendar({ dates, selected, onSelect }) {
 export default function Admin() {
   const [viewMode, setViewMode] = useState(VIEW_CALENDAR)
 
+  useEffect(() => {
+    document.title = '管理后台 · 51呀呀'
+  }, [])
+
   // 分类视图
   const [cacheSites, setCacheSites] = useState([])
   const [selectedSite, setSelectedSite] = useState('')

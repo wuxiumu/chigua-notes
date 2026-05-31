@@ -9,6 +9,10 @@ export default function Home() {
   const [q, setQ] = useState('')
   const [loading, setLoading] = useState(true)
 
+  useEffect(() => {
+    document.title = '51呀呀 · 泛娱乐呀呀母站'
+  }, [])
+
   const load = (query = '') => {
     setLoading(true)
     api.events(query ? { q: query } : {})

@@ -46,6 +46,89 @@ use App\Auth;
 
 $config = require __DIR__ . '/../config/config.php';
 
+// ==================== SEO Endpoints (root-level, not under /api/) ====================
+
+$seoPath = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+$seoPath = trim($seoPath, '/');
+
+// ====== GET /robots.txt ======
+if ($seoPath === 'robots.txt' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    header('Content-Type: text/plain; charset=utf-8');
+    echo "User-agent: *\n";
+    echo "Allow: /\n";
+    echo "Disallow: /admin/\n";
+    echo "Disallow: /login\n";
+    echo "Disallow: /api/\n";
+    echo "Sitemap: https://www.51chigua.com/sitemap.xml\n";
+    exit;
+}
+
+// ====== GET /sitemap.xml ======
+if ($seoPath === 'sitemap.xml' && $_SERVER['REQUEST_METHOD'] === 'GET') {
+    header('Content-Type: application/xml; charset=utf-8');
+
+    $baseUrl = 'https://www.51chigua.com';
+    $today = date('Y-m-d');
+
+    $xml = new \SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"/>');
+
+    // Static pages
+    $addUrl = function ($loc, $lastmod, $changefreq, $priority) use ($xml) {
+        $u = $xml->addChild('url');
+        $u->addChild('loc', htmlspecialchars($loc, ENT_XML1, 'UTF-8'));
+        $u->addChild('lastmod', $lastmod);
+        $u->addChild('changefreq', $changefreq);
+        $u->addChild('priority', $priority);
+    };
+
+    // Home
+    $addUrl($baseUrl . '/', $today, 'daily', '1.0');
+    // Hot page
+    $addUrl($baseUrl . '/hot', $today, 'daily', '0.9');
+
+    // All site subpages from SQLite
+    try {
+        $sites = DB::all('SELECT slug, name, updated_at FROM sites ORDER BY id');
+        foreach ($sites as $site) {
+            $lastmod = !empty($site['updated_at']) ? date('Y-m-d', strtotime($site['updated_at'])) : $today;
+            $addUrl($baseUrl . '/s/' . $site['slug'], $lastmod, 'weekly', '0.8');
+        }
+    } catch (\Throwable $e) {
+        // DB not available, skip sites
+    }
+
+    // All event pages from Markdown files
+    try {
+        $eventsDir = __DIR__ . '/../data/events';
+        if (is_dir($eventsDir)) {
+            $mdFiles = glob($eventsDir . '/*.md');
+            foreach ($mdFiles as $mdFile) {
+                $content = file_get_contents($mdFile);
+                $lastmod = $today;
+                // Extract first_seen from frontmatter
+                if (preg_match('/^first_seen:\s*(.+)$/m', $content, $m)) {
+                    $ts = strtotime(trim($m[1]));
+                    if ($ts !== false) {
+                        $lastmod = date('Y-m-d', $ts);
+                    }
+                }
+                // Extract slug from filename or frontmatter
+                if (preg_match('/^slug:\s*(.+)$/m', $content, $m)) {
+                    $slug = trim($m[1]);
+                } else {
+                    $slug = basename($mdFile, '.md');
+                }
+                $addUrl($baseUrl . '/e/' . $slug, $lastmod, 'monthly', '0.7');
+            }
+        }
+    } catch (\Throwable $e) {
+        // Skip events on error
+    }
+
+    echo $xml->asXML();
+    exit;
+}
+
 // CORS
 header('Access-Control-Allow-Origin: ' . $config['cors_origin']);
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');

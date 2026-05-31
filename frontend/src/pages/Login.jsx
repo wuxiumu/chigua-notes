@@ -14,6 +14,10 @@ export default function Login() {
   const [lockRemaining, setLockRemaining] = useState(0)
   const [attempts, setAttempts] = useState(0)
 
+  useEffect(() => {
+    document.title = '管理员登录 · 51呀呀'
+  }, [])
+
   const loadCaptcha = useCallback(() => {
     api.auth.captcha()
       .then(res => {

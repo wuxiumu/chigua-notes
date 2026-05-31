@@ -104,6 +104,16 @@ export default function EventDetail() {
     api.event(eventSlug).then(setE).catch(() => setErr(true))
   }, [eventSlug])
 
+  useEffect(() => {
+    if (e) {
+      document.title = `${e.title} · 51呀呀`
+    } else if (err) {
+      document.title = '事件不存在 · 51呀呀'
+    } else {
+      document.title = '加载中 · 51呀呀'
+    }
+  }, [e, err])
+
   if (err) return (
     <div className="empty-state">
       <div className="empty-icon">❌</div>

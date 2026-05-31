@@ -24,8 +24,12 @@ function RankBadge({ rank }) {
 export default function HotPage() {
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
-  const [filter, setFilter] = useState('all') // all | fermenting | responded | ended
-  const [timeRange, setTimeRange] = useState('24h') // 24h | 7d
+  const [filter, setFilter] = useState('all')
+  const [timeRange, setTimeRange] = useState('24h')
+
+  useEffect(() => {
+    document.title = '🔥 热榜 · 51呀呀'
+  }, [])
 
   useEffect(() => {
     setLoading(true)
