@@ -282,7 +282,7 @@ class CacheReader
         // 磁盘占用
         if (is_dir($this->cacheRoot)) {
             $output = [];
-            @exec("du -sk " . escapeshellarg($this->cacheRoot) . " 2>/dev/null", $output);
+            @\exec("du -sk " . escapeshellarg($this->cacheRoot) . " 2>/dev/null", $output);
             if (!empty($output[0])) {
                 $totalDisk = (int)explode("\t", $output[0])[0]; // KB
             }
