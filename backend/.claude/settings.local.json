@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(php -S localhost:8000 -t public)",
+      "Bash(curl -s 'http://localhost:8000/api/events/129')",
+      "Bash(python3 -m json.tool)",
+      "Bash(php *)",
+      "Bash(python3 -c \"import json,sys; d=json.load\\(sys.stdin\\); print\\('title:', d.get\\('title','N/A'\\)[:60]\\); print\\('status:', d.get\\('status','N/A'\\)\\)\")"
+    ]
+  }
+}
