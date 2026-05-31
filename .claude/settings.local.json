@@ -86,7 +86,13 @@
       "Bash(curl -s \"http://localhost:5173/api/auth/captcha\")",
       "Bash(python3 -c \"import sys,json; d=json.load\\(sys.stdin\\); print\\('Question:', d.get\\('question','MISSING'\\)\\)\")",
       "Bash(curl -sv \"http://localhost:5173/api/auth/captcha\")",
-      "Bash(git add *)"
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git rm *)",
+      "Bash(git checkout *)",
+      "Bash(git commit *)",
+      "Bash(git remote *)",
+      "Bash(git push *)"
     ]
   }
 }
