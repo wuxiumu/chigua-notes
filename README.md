@@ -20,7 +20,7 @@
 3. **M3**：Web / 桌面壳 + 同步策略说明  
 4. **M4**：白标与团队空间  
 
-详见 `docs/ROADMAP.md`。
+详见 `docs/ROADMAP.md` / `docs/CHECKLIST-M0.md`。
 
 ## 定制合作（可报价）
 
